@@ -1,0 +1,6 @@
+; $Id$
+name = Nice messages
+description = Displays drupal messages in nice popups.
+core = 7.x
+package = "Meant4"
+files[] = nicemessages.module

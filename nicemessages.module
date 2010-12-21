@@ -1,0 +1,49 @@
+<?php
+// $Id$
+
+ /**
+  *  Błażej Owczarczyk
+  *  blazej.owczarczyk@gmail.com 
+  * 
+  *  Name: Nice menus 
+  *  Description: Displays drupal messages with jGrowl.
+  */
+
+/**
+ *  Implements hook_init().
+ */
+function nicemessages_init() {
+  // Attach jGrowl files
+  drupal_add_css(drupal_get_path('module', 'nicemessages') . '/libraries/jgrowl/jquery.jgrowl.css');
+  drupal_add_js(drupal_get_path('module', 'nicemessages') . '/libraries/jgrowl/jquery.jgrowl.js');
+  // Atach module files
+  drupal_add_css(drupal_get_path('module', 'nicemessages') . '/css/nicemessages.css'); 
+  drupal_add_js(drupal_get_path('module', 'nicemessages') . '/js/nicemessages.js');
+}
+ 
+/**
+ *  Implements hook_preprocess_page().
+ */ 
+function nicemessages_preprocess_page(&$vars) {
+  // Do not messages in standard way,
+  $vars['show_messages'] = false;
+  // display them with jGrowl
+  nicemessages_set_messages();
+}
+
+/**
+ *  Save messages to js settings. 
+ */
+function nicemessages_set_messages() {
+  $items = array(); 
+  foreach (drupal_get_messages() as $type => $messages) {
+    foreach ($messages as $key => $message) {
+      $items[] = array(
+        'type' => $type,
+        'content' => $message,
+      );
+    }
+  }
+  $settings = array('items' => $items);
+  drupal_add_js(array('nicemessages' => $settings), 'setting');
+}
