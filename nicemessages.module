@@ -20,6 +20,21 @@ function nicemessages_init() {
   drupal_add_css(drupal_get_path('module', 'nicemessages') . '/css/nicemessages.css'); 
   drupal_add_js(drupal_get_path('module', 'nicemessages') . '/js/nicemessages.js');
 }
+
+/**
+ *  Implements hook_menu().
+ */
+function nicemessages_menu() {
+  // Module configuration form
+  $items['admin/config/system/nicemessages'] = array(
+    'title' => 'Nice messages',
+    'description' => 'Nice messages configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('nicemessages_settings_form'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
  
 /**
  *  Implements hook_preprocess_page().
@@ -46,4 +61,17 @@ function nicemessages_set_messages() {
   }
   $settings = array('items' => $items);
   drupal_add_js(array('nicemessages' => $settings), 'setting');
+}
+
+function nicemessages_settings_form() {
+  foreach (array('status', 'warning', 'error') as $type) {
+    $form[$type] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Settings for @type messages', array('@type' => $type)),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+    );
+  }
+
+  return system_settings_form($form);
 }
