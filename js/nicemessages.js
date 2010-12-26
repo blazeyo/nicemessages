@@ -16,6 +16,7 @@ Drupal.behaviors.nicemessages = {
             jQuery(Drupal.settings.nicemessages.items[i].content).text().length > 100 ? true : false
         });
       }
+      delete Drupal.settings.nicemessages.items;
     }
   }
 }
