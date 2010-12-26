@@ -14,8 +14,8 @@
  */
 function nicemessages_init() {
   // Attach jGrowl files
-  drupal_add_css(drupal_get_path('module', 'nicemessages') . '/libraries/jgrowl/jquery.jgrowl.css');
-  drupal_add_js(drupal_get_path('module', 'nicemessages') . '/libraries/jgrowl/jquery.jgrowl.js');
+  drupal_add_css(drupal_get_path('module', 'nicemessages') .'/libraries/jgrowl/jquery.jgrowl.css');
+  drupal_add_js(drupal_get_path('module', 'nicemessages') .'/libraries/jgrowl/jquery.jgrowl.js');
   // Atach module files
   drupal_add_css(drupal_get_path('module', 'nicemessages') . '/css/nicemessages.css'); 
   drupal_add_js(drupal_get_path('module', 'nicemessages') . '/js/nicemessages.js');
@@ -56,20 +56,77 @@ function nicemessages_set_messages() {
       $items[] = array(
         'type' => $type,
         'content' => $message,
+        'life' => variable_get('nicemessages_' . $type .'_life', '3') * 1000,
+        'glue' => variable_get('nicemessages_' . $type .'_glue', 'after'),
+        'speed' => variable_get('nicemessages_' . $type .'_speed', 'normal'),
       );
     }
   }
-  $settings = array('items' => $items);
+  $settings = array(
+    'position' => variable_get('nicemessages_position', 'top-right'),
+    'items' => $items,
+  );
   drupal_add_js(array('nicemessages' => $settings), 'setting');
 }
 
+/**
+ *  Module settings form.
+ */
 function nicemessages_settings_form() {
+  $form['global'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Global settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['global']['nicemessages_position'] = array(
+    '#type' => 'select',
+    '#title' => t('Where on the screen messages should be displayed?'),
+    '#default_value' => variable_get('nicemessages_position', 'top-right'),
+    '#options' => array(
+      'top-left' => t('top left corner'),
+      'top-right' => t('top right corner'),
+      'bottom-left' => t('bottom left corner'),
+      'bottom-right' => t('bottom right corner'),
+      'center' => t('center of the screen'),
+    ),
+  );
   foreach (array('status', 'warning', 'error') as $type) {
+    $type_prefix = 'nicemessages_' . $type . '_';
     $form[$type] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Settings for @type messages', array('@type' => $type)),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+      '#type' => 'fieldset',
+      '#title' => t('@type messages', array('@type' => $type)),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form[$type][$type_prefix . 'life'] = array(
+      '#type' => 'textfield',
+      '#title' => t('How long should the message be visible?'),
+      '#default_value' => variable_get($type_prefix . 'life', '3'),
+      '#size' => 10,
+      '#maxlength' => 10,
+      '#required' => FALSE,
+      '#field_suffix' => 'seconds',
+      '#description' => t('Enter 0 for sticky messages'),
+    );
+    $form[$type][$type_prefix . 'glue'] = array(
+      '#type' => 'select',
+      '#title' => t('Should new messages be prepended or appended to the list?'),
+      '#default_value' => variable_get($type_prefix . 'glue', 'after'),
+      '#options' => array(
+        'before' => 'prepended',
+        'after' => 'appended',
+      ),
+    );
+    $form[$type][$type_prefix . 'speed'] = array(
+      '#type' => 'select',
+      '#title' => t('Animation speed'),
+      '#default_value' => variable_get($type_prefix . 'speed', 'normal'),
+      '#options' => array(
+        'slow' => 'slow',
+        'normal' => 'normal',
+        'fast' => 'fast',
+      ),
     );
   }
 
