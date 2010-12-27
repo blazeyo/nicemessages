@@ -1,13 +1,13 @@
 <?php
 // $Id$
 
- /**
-  *  Błażej Owczarczyk
-  *  blazej.owczarczyk@gmail.com 
-  * 
-  *  Name: Nice menus 
-  *  Description: Displays drupal messages with jGrowl.
-  */
+/**
+ *  Błażej Owczarczyk
+ *  blazej.owczarczyk@gmail.com 
+ * 
+ *  Name: Nice menus 
+ *  Description: Displays drupal messages with jGrowl.
+ */
 
 /**
  *  Implements hook_init().
@@ -40,7 +40,7 @@ function nicemessages_menu() {
  *  Implements hook_preprocess_page().
  */ 
 function nicemessages_preprocess_page(&$vars) {
-  // Do not messages in standard way,
+  // Do not display messages in standard way,
   $vars['show_messages'] = false;
   // display them with jGrowl
   nicemessages_set_messages();
@@ -77,7 +77,7 @@ function nicemessages_settings_form() {
     '#type' => 'fieldset',
     '#title' => t('Global settings'),
     '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#collapsed' => FALSE,
   );
   $form['global']['nicemessages_position'] = array(
     '#type' => 'select',
