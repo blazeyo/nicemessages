@@ -1,3 +1,4 @@
 /* $Id$ */
 
 #jGrowl .jGrowl-notification { background-position: 4px center; background-repeat: no-repeat; color: #fff; padding-left: 32px; }
+#jGrowl .jGrowl-notification a { color: #fff; }

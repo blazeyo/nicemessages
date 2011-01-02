@@ -1,6 +1,7 @@
 <?php
 // $Id$
 /**
+
  * @file
  * Nicemessages module
  *
@@ -41,10 +42,6 @@ function nicemessages_menu() {
  */
 function nicemessages_permission() {
   return array(
-    'administer nicemessages' => array(
-      'title' => t('Administer niecemessages'),
-      'description' => t('Adjust nicemessages settings.'),
-    ),
     'toggle nicemessages' => array(
       'title' => t('Toggle nicemessages'),
       'description' => t('Users with this permission can choose to turn nicemessages on or off for their account.'),

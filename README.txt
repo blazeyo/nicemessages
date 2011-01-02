@@ -22,14 +22,13 @@ Installation
 Settings
 ========
 
-The settings form is at admin/config/system/nicemessages and is available to users
-with "administer site configuration" permission. It is divided into
+The settings form is at admin/config/system/nicemessages. It is divided into
 global (default state, position) and message-type-specyfic settings.
 
 Permissions
 ===========
 
-"toggle nicemessages"
+toggle nicemessages
   Users with this permission can turn on or off displaying nicemessages for
   them at their account edit page (user/$uid/edit).
 
