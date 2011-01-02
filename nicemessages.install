@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Module install file.
+ *
+ * Attaching boolean nicemessages_enabled field to user objects.
+ */
+
+/**
+ * Implements hook_install();
+ */
+function nicemessages_install() {
+  $field = array(
+    'field_name' => NICEMESSAGES_FIELDNAME,
+    'type' => 'list_boolean',
+    'settings' => array(
+      'allowed_values' => array(
+        1 => t('Yes'),
+        0 => t('No'),
+      ),
+      'default_value' => 1,
+    ),
+  );
+
+  field_create_field($field);
+
+  $instance = array(
+    'field_name' => NICEMESSAGES_FIELDNAME,
+    'entity_type' => 'user',
+    'bundle' => 'user',
+    'label' => t('Display messages in popups.'),
+    'required' => false,
+    'widget' => array(
+        'type' => 'options_select'
+    ),
+  );
+
+  field_create_instance($instance);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function nicemessages_uninstall() {
+  field_delete_field(NICEMESSAGES_FIELDNAME);
+}
