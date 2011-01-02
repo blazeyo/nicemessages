@@ -112,7 +112,6 @@ function nicemessages_set_messages() {
     'position' => variable_get('nicemessages_position', 'top-right'),
     'items' => $items,
   );
-  drupal_set_message('<pre>' . print_r('test', true) . '</pre>');
   drupal_add_js(array('nicemessages' => $settings), 'setting');
 }
 
