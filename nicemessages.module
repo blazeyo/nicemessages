@@ -3,7 +3,7 @@
 /**
 
  * @file
- * Nicemessages module
+ * Nicemessages
  *
  * Displays drupal messages with jGrowl jQuery plugin.
  */
