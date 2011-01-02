@@ -84,7 +84,8 @@ function nicemessages_are_enabled() {
   if (user_access('toggle nicemessages')) {
     global $user;
     // Load the full user entity with fields attached.
-    $account = array_shift(entity_load('user', array($user->uid)));
+    $accounts = entity_load('user', array($user->uid));
+    $account = array_shift($accounts);
     return empty($account->{NICEMESSAGES_FIELDNAME}[LANGUAGE_NONE][0]['value']) ? false : true;
   } else {
     return variable_get('niecemessages_default_state', 1) == 1 ? true : false;
