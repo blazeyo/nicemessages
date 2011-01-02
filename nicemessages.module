@@ -1,13 +1,13 @@
 <?php
 // $Id$
-
 /**
- *  Błażej Owczarczyk
- *  blazej.owczarczyk@gmail.com 
- * 
- *  Name: Nice menus 
- *  Description: Displays drupal messages with jGrowl.
+ * @file
+ * Nicemessages module
+ *
+ * Displays drupal messages with jGrowl jQuery plugin.
  */
+
+define('NICEMESSAGES_FIELDNAME', 'field_user_nicemessages_enabled');
 
 /**
  *  Implements hook_init().
@@ -35,15 +35,63 @@ function nicemessages_menu() {
   );
   return $items;
 }
+
+/**
+ * Implements hook_permission().
+ */
+function nicemessages_permission() {
+  return array(
+    'administer nicemessages' => array(
+      'title' => t('Administer niecemessages'),
+      'description' => t('Adjust nicemessages settings.'),
+    ),
+    'toggle nicemessages' => array(
+      'title' => t('Toggle nicemessages'),
+      'description' => t('Users with this permission can choose to turn nicemessages on or off for their account.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_access().
+ */
+function nicemessages_field_access($op, $field, $entity_type, $entity, $account) {
+  if ($field['field_name'] == NICEMESSAGES_FIELDNAME) {
+    // Users with toggle nicemessages permission can edit their settings.
+    if ($op == 'edit') {
+      return user_access('toggle nicemessages', $account);
+    }
+    else if ($op == 'view') {
+      return user_access('administer users');
+    }
+  }
+  return TRUE;
+}
  
 /**
  *  Implements hook_preprocess_page().
  */ 
 function nicemessages_preprocess_page(&$vars) {
-  // Do not display messages in standard way,
-  $vars['show_messages'] = false;
-  // display them with jGrowl
-  nicemessages_set_messages();
+  if (nicemessages_are_enabled ()) {
+    // Do not display messages in standard way,
+    $vars['show_messages'] = false;
+    // display them with jGrowl
+    nicemessages_set_messages();
+  }
+}
+
+/**
+ * Check if nicemessages are enabled for current user.
+ */
+function nicemessages_are_enabled() {
+  if (user_access('toggle nicemessages')) {
+    global $user;
+    // Load the full user entity with fields attached.
+    $account = array_shift(entity_load('user', array($user->uid)));
+    return empty($account->{NICEMESSAGES_FIELDNAME}[LANGUAGE_NONE][0]['value']) ? false : true;
+  } else {
+    return variable_get('niecemessages_default_state', 1) == 1 ? true : false;
+  }
 }
 
 /**
@@ -78,6 +126,17 @@ function nicemessages_settings_form() {
     '#title' => t('Global settings'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
+  );
+  $form['global']['niecemessages_default_state'] = array(
+    '#type' => 'select',
+    '#title' => t('Nicemessages default state'),
+    '#required' => true,
+    '#default_value' => variable_get('niecemessages_default_state', 1),
+    '#options' => array(
+      1 => 'enabled',
+      0 => 'disabled'
+    ),
+    '#description' => 'Users with "toggle nicemessages" permission will be able to override this setting for their account.',
   );
   $form['global']['nicemessages_position'] = array(
     '#type' => 'select',

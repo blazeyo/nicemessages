@@ -1,4 +1,10 @@
 // $Id$
+/**
+ * @file
+ * nicemessages.js
+ *
+ * Use jGrowl to display messages.
+ */
 
 /**
  *  Displays messages with jGrowl.  
