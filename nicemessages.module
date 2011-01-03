@@ -43,7 +43,7 @@ function nicemessages_menu() {
 function nicemessages_permission() {
   return array(
     'administer nicemessages' => array(
-      'title' => t('Administer niecemessages'),
+      'title' => t('Administer nicemessages'),
       'description' => t('Adjust nicemessages settings.'),
     ),
     'toggle nicemessages' => array(
@@ -92,7 +92,7 @@ function nicemessages_are_enabled() {
     $account = array_shift($accounts);
     return empty($account->{NICEMESSAGES_FIELDNAME}[LANGUAGE_NONE][0]['value']) ? false : true;
   } else {
-    return variable_get('niecemessages_default_state', 1) == 1 ? true : false;
+    return variable_get('nicemessages_default_state', 1) == 1 ? true : false;
   }
 }
 
@@ -103,19 +103,21 @@ function nicemessages_set_messages() {
   $items = array(); 
   foreach (drupal_get_messages() as $type => $messages) {
     foreach ($messages as $key => $message) {
-      $items[] = array(
+      $item = array(
         'type' => $type,
         'content' => $message,
         'life' => variable_get('nicemessages_' . $type .'_life', '3') * 1000,
         'glue' => variable_get('nicemessages_' . $type .'_glue', 'after'),
         'speed' => variable_get('nicemessages_' . $type .'_speed', 'normal'),
       );
+      $items[] = $item;
     }
   }
   $settings = array(
     'position' => variable_get('nicemessages_position', 'top-right'),
     'items' => $items,
   );
+  drupal_alter('nicemessages', $settings);
   drupal_add_js(array('nicemessages' => $settings), 'setting');
 }
 
@@ -129,7 +131,7 @@ function nicemessages_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['global']['niecemessages_default_state'] = array(
+  $form['global']['nicemessages_default_state'] = array(
     '#type' => 'select',
     '#title' => t('Nicemessages default state'),
     '#required' => true,
