@@ -32,7 +32,7 @@ function nicemessages_menu() {
     'description' => 'Nice messages configuration',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('nicemessages_settings_form'),
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('administer nicemessages'),
   );
   return $items;
 }
@@ -42,6 +42,10 @@ function nicemessages_menu() {
  */
 function nicemessages_permission() {
   return array(
+    'administer nicemessages' => array(
+      'title' => t('Administer niecemessages'),
+      'description' => t('Adjust nicemessages settings.'),
+    ),
     'toggle nicemessages' => array(
       'title' => t('Toggle nicemessages'),
       'description' => t('Users with this permission can choose to turn nicemessages on or off for their account.'),
