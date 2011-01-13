@@ -1,16 +1,13 @@
 $Id$
 
+Description
+============
+
 Nicemessages module provides displaying drupal messages in nice popups using
 the jQuery jGrowl plugin (http://stanlemon.net/projects/jgrowl.html).
 
-Module written by blazey (http://drupal.org/user/353861).
-
-Development was sponsored by http://meant4.com.
-
-Dependencies
-============
-
-none
+Module written by blazey (http://drupal.org/user/353861) for the monthly Meant4
+Drupal Contrib Contest (http://meant4.com).
 
 Installation
 ============
@@ -28,9 +25,17 @@ global (default state, position) and message-type-specyfic settings.
 Permissions
 ===========
 
+administer nicemessages
+  Gives access to configuration form.
+
 toggle nicemessages
   Users with this permission can turn on or off displaying nicemessages for
   them at their account edit page (user/$uid/edit).
+
+Dependencies
+============
+
+none
 
 Support
 =======

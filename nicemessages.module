@@ -85,12 +85,6 @@ function nicemessages_preprocess_page(&$vars) {
  * Check if nicemessages are enabled for current user.
  */
 function nicemessages_are_enabled() {
-  foreach (module_implements('nicemessages_access') as $module) {
-    $function = $module . '_nicemessages_access';
-    if ($function() === false) {
-      return false;
-    }
-  }
   if (user_access('toggle nicemessages')) {
     global $user;
     // Load the full user entity with fields attached.
